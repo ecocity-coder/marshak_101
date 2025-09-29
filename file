@@ -1,0 +1,62 @@
+!pip install nltk
+
+import nltk
+
+nltk.download('punkt')
+nltk.download('stopwords')
+
+
+from nltk.tokenize import word_tokenize
+nltk.download('punkt_tab')
+
+import re
+
+def count_syllables_russian(text):
+    # Простая эвристика: считаем гласные как слоги
+    return len(re.findall(r'[аеёиоуыэюя]', text.lower()))
+
+def count_syllables_english(text):
+    # Грубый подсчёт количества слогов в английском тексте
+    return len(re.findall(r'[aeiouy]+', text.lower()))
+
+# Разбиваем на строки
+en_lines = [line.strip() for line in
+"""
+O truant Muse what shall be thy amends
+For thy neglect of truth in beauty dyed?
+Both truth and beauty on my love depends;
+So dost thou too, and therein dignified.
+Make answer Muse: wilt thou not haply say,
+‘Truth needs no colour, with his colour fixed;
+Beauty no pencil, beauty’s truth to lay;
+But best is best, if never intermixed’?
+Because he needs no praise, wilt thou be dumb?
+Excuse not silence so, for’t lies in thee
+To make him much outlive a gilded tomb
+And to be praised of ages yet to be.
+Then do thy office, Muse; I teach thee how
+To make him seem, long hence, as he shows now.
+""".strip().split('\n')]
+ru_lines = [line.strip() for line in """
+О, ветреная муза,
+отчего,
+Отвергнув правду в блеске красоты,
+Ты не рисуешь друга моего,
+Чьей доблестью прославлена и ты?
+Но, может быть, ты скажешь мне в ответ,
+Что красоту не надо украшать,
+Что правде придавать не надо цвет
+И лучшее не стоит улучшать.
+Да, совершенству не нужна хвала,
+Но ты ни слов, ни красок не жалей,
+Чтоб в славе красота пережила
+Свой золотом покрытый мавзолей.
+
+Нетронутым — таким, как в наши дни,
+Прекрасный образ миру сохрани!
+""".strip().split('\n')]
+en_syl = [count_syllables_english(line) for line in en_lines]
+ru_syl = [count_syllables_russian(line) for line in ru_lines]
+
+print("Слоги в строках (англ):", en_syl)
+print("Слоги в строках (рус):", ru_syl)
